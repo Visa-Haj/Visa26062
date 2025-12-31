@@ -29,7 +29,6 @@
       overflow: hidden;
     }
 
-    /* لوگو به عنوان پس‌زمینه در بالای فرم */
     .logo-background {
       position: absolute;
       top: -20px;
@@ -103,15 +102,6 @@
       display: none;
     }
 
-    .pdf-link {
-      display: none;
-      margin-top: 15px;
-      font-size: 16px;
-      color: #0b5d3b;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
     .footer {
       margin-top: 25px;
       font-size: 13px;
@@ -168,9 +158,6 @@
     لطفاً عددی معتبر بین ۱ تا ۱۸۰ وارد نمایید
   </div>
 
-  <!-- لینک دانلود PDF -->
-  <a id="pdfLink" class="pdf-link" href="#" target="_blank" download>دانلود ویزا</a>
-
   <div class="footer">
     🌙 التماس دعا
   </div>
@@ -180,25 +167,17 @@
 function openPDF() {
   const pdfNum = document.getElementById('pdfNum').value;
   const errorDiv = document.getElementById('error');
-  const pdfLink = document.getElementById('pdfLink');
 
   if (!pdfNum || pdfNum < 1 || pdfNum > 180) {
     errorDiv.style.display = 'block';
-    pdfLink.style.display = 'none';
     return;
   }
 
   errorDiv.style.display = 'none';
 
-  // مسیر فایل PDF
-  const pdfPath = `pdfs/${pdfNum}.pdf`;
-
-  // باز کردن PDF در تب جدید
-  window.open(pdfPath, '_blank');
-
-  // فعال کردن لینک دانلود
-  pdfLink.href = pdfPath;
-  pdfLink.style.display = 'inline-block';
+  // باز کردن viewer.html در تب جدید و ارسال نام فایل PDF
+  const viewerPath = `viewer.html?file=${pdfNum}.pdf`;
+  window.open(viewerPath, '_blank');
 }
 </script>
 
