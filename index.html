@@ -105,7 +105,7 @@ button:hover { background-color: #094d31; }
     لطفاً کد زائری خود را وارد نمایید
   </div>
 
-  <input type="number" id="pdfNum" min="1" max="180" placeholder="          " onkeypress="if(event.key==='Enter'){openPDF()}">
+  <input type="number" id="pdfNum" min="1" max="180" placeholder="             " onkeypress="if(event.key==='Enter'){openPDF()}">
   <br>
   <button onclick="openPDF()">مشاهده ویزا</button>
   <a id="downloadBtn" class="download-btn" href="" download>دانلود ویزا</a>
@@ -121,21 +121,34 @@ function openPDF() {
   const downloadBtn = document.getElementById('downloadBtn');
 
   if (!pdfNum || pdfNum < 1 || pdfNum > 180) {
+    errorDiv.textContent = 'لطفاً عددی معتبر بین ۱ تا ۱۸۰ وارد نمایید';
     errorDiv.style.display = 'block';
     downloadBtn.style.display = 'none';
     return;
   }
 
-  errorDiv.style.display = 'none';
-
   const pdfPath = `pdfs/${pdfNum}.pdf`;
 
-  // باز کردن PDF مستقیم در همان تب یا مرورگر اندروید
-  window.location.href = pdfPath;
-
-  // نمایش دکمه دانلود زیر فرم
-  downloadBtn.href = pdfPath;
-  downloadBtn.style.display = 'inline-block';
+  // بررسی وجود فایل با fetch
+  fetch(pdfPath, { method: 'HEAD' })
+    .then(response => {
+      if(response.ok){
+        errorDiv.style.display = 'none';
+        downloadBtn.href = pdfPath;
+        downloadBtn.style.display = 'inline-block';
+        // باز کردن PDF
+        window.location.href = pdfPath;
+      } else {
+        errorDiv.textContent = 'کد زائری اشتباه است!';
+        errorDiv.style.display = 'block';
+        downloadBtn.style.display = 'none';
+      }
+    })
+    .catch(err => {
+      errorDiv.textContent = 'خطا در دسترسی به فایل PDF!';
+      errorDiv.style.display = 'block';
+      downloadBtn.style.display = 'none';
+    });
 }
 </script>
 
